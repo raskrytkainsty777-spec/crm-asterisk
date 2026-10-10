@@ -1,0 +1,21 @@
+[global]
+type = global
+user_agent = WALEAD CRM
+
+; к оператору (Билайн и др.) — TCP на отдельном порту: 5060 занят Asterisk фермы
+[transport-tcp]
+type = transport
+protocol = tcp
+bind = 0.0.0.0:${SIP_PORT}
+external_signaling_address = ${EXTERNAL_HOST}
+external_signaling_port = ${SIP_PORT}
+external_media_address = ${EXTERNAL_HOST}
+
+; браузеры сотрудников: WebSocket (TLS снимает Traefik на sip.walead.ru)
+[transport-ws]
+type = transport
+protocol = ws
+bind = 0.0.0.0
+external_media_address = ${EXTERNAL_HOST}
+
+#include pjsip_lines.conf

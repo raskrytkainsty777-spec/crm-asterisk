@@ -1,0 +1,30 @@
+# Asterisk CRM walead: звонки менеджеров из браузера (WebRTC) через SIP-линии оператора.
+# Линии берёт из бэкенда (админка → CRM → Телефония), события звонков и записи шлёт туда же.
+# Браузер ходит на wss://sip.walead.ru/ws (TLS снимает Traefik Coolify → порт 8088 контейнера).
+# Наружу открыты SIP к оператору (TCP ${SIP_PORT}) и медиа (UDP 12000-12200)
+services:
+  asterisk:
+    build: .
+    restart: unless-stopped
+    environment:
+      BACKEND: ${BACKEND:-http://xleads-backend:3000/api}
+      TOKEN: ${CRM_ASTERISK_TOKEN}
+      EXTERNAL_HOST: ${EXTERNAL_HOST:-195.58.37.61}
+      SIP_PORT: ${SIP_PORT:-5070}
+      LINES_SYNC_INTERVAL: ${LINES_SYNC_INTERVAL:-30}
+    volumes:
+      - recordings:/var/spool/asterisk/monitor
+    expose:
+      - "8088"
+    ports:
+      - "${SIP_PORT:-5070}:${SIP_PORT:-5070}/tcp"
+      - "12000-12200:12000-12200/udp"
+    networks:
+      - coolify
+
+volumes:
+  recordings:
+
+networks:
+  coolify:
+    external: true
