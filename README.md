@@ -5,8 +5,8 @@ Asterisk для CRM walead (crm.walead.ru): менеджеры звонят кл
 пишутся (MixMonitor), запись уходит в бэкенд — там расшифровка SpeechKit и пересказ ИИ.
 
 - Линии заводятся в админке walead: CRM → Телефония. Бэкенд отдаёт кусок pjsip.conf
-  (`/api/internal/crm-asterisk/pjsip`), контейнер забирает его раз в 30 с.
-- События звонков — CURL из диалплана (`/internal/crm-asterisk/call`), запись — `crm-upload.sh`.
+  (`/api/crm-internal/asterisk/pjsip`), контейнер забирает его раз в 30 с.
+- События звонков — CURL из диалплана (`/crm-internal/asterisk/call`), запись — `crm-upload.sh`.
 - Браузер: `wss://sip.walead.ru/ws` → Traefik Coolify → порт 8088 контейнера.
 - Наружу: SIP к оператору TCP `SIP_PORT` (5070, 5060 занят Asterisk фермы), RTP UDP 12000–12200.
 

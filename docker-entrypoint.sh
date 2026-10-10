@@ -17,7 +17,7 @@ done
 # заодно отдаём бэкенду статусы регистраций (видно в админке)
 LINES_FILE=/etc/asterisk/pjsip_lines.conf
 LINES_MARKER="; lk.walead crm sip lines"
-LINES_URL="${BACKEND}/internal/crm-asterisk/pjsip?token=${TOKEN}"
+LINES_URL="${BACKEND}/crm-internal/asterisk/pjsip?token=${TOKEN}"
 INTERVAL="${LINES_SYNC_INTERVAL:-30}"
 
 fetch_lines() {
@@ -55,7 +55,7 @@ sync_loop() {
     fi
     /usr/sbin/asterisk -rx "pjsip show registrations" 2>/dev/null \
       | curl -fsS --max-time 10 -H "X-Asterisk-Token: ${TOKEN}" -H "Content-Type: text/plain" --data-binary @- \
-        "${BACKEND}/internal/crm-asterisk/registrations" >/dev/null 2>&1 || true
+        "${BACKEND}/crm-internal/asterisk/registrations" >/dev/null 2>&1 || true
   done
 }
 

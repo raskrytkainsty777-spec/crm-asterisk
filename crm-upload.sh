@@ -6,6 +6,6 @@ FILE="/var/spool/asterisk/monitor/${ID}.wav"
 sleep 3
 [ -s "$FILE" ] || exit 0
 if curl -fsS --max-time 180 -H "X-Asterisk-Token: ${TOKEN}" -F "id=${ID}" -F "file=@${FILE};type=audio/wav" \
-  "${BACKEND}/internal/crm-asterisk/recording" >/dev/null; then
+  "${BACKEND}/crm-internal/asterisk/recording" >/dev/null; then
   rm -f "$FILE"
 fi
